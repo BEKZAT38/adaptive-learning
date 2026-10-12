@@ -22,12 +22,12 @@ export default function TeacherScreen({ navigation }: TabScreenProps<'Студе
           <View>
             <Text style={ui.h1}>Панель преподавателя</Text>
             <Text style={ui.muted}>Демонстрационные данные группы</Text>
-            <View style={[ui.card, { backgroundColor: C.primary }]}>
+            <View style={[ui.card, { backgroundColor: '#15803D' }]}>
               <Text style={{ color: '#DCFCE7' }}>Общая успеваемость</Text>
               <Text style={{ color: '#fff', fontSize: 38, fontWeight: '800' }}>{group}%</Text>
               <Bar value={group / 100} color="#fff" track="#ffffff55" />
             </View>
-            <TextInput style={ui.input} placeholder="Поиск студента" value={q} onChangeText={setQ} />
+            <TextInput placeholderTextColor="#8FB9A3" style={ui.input} placeholder="Поиск студента" value={q} onChangeText={setQ} />
           </View>
         }
         ListEmptyComponent={<Text style={[ui.muted, { marginTop: 12 }]}>Никого не найдено</Text>}

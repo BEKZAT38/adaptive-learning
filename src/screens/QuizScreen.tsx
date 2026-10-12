@@ -76,7 +76,7 @@ export default function QuizScreen({ route, navigation }: Props) {
         <QuestionCard topic={q.topic} text={q.text} />
         {accept ? (
           <>
-            <TextInput style={[ui.input, { fontFamily: 'monospace' }]} placeholder="Ваш ответ" autoCapitalize="none" autoCorrect={false} editable={!res} value={text} onChangeText={setText} />
+            <TextInput placeholderTextColor="#8FB9A3" style={[ui.input, { fontFamily: 'monospace' }]} placeholder="Ваш ответ" autoCapitalize="none" autoCorrect={false} editable={!res} value={text} onChangeText={setText} />
             {!res && <Btn icon="checkmark" title="Проверить" disabled={!text.trim()} onPress={() => submit(accept.some((a) => norm(a) === norm(text)), -1)} />}
           </>
         ) : (

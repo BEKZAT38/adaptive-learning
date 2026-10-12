@@ -17,7 +17,7 @@ const ic = (n: any) => ({ color, size }: { color: string; size: number }) => <Io
 export default function MainTabs() {
   const { user } = useApp();
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false, tabBarActiveTintColor: C.primary, tabBarInactiveTintColor: C.muted }}>
+    <Tab.Navigator screenOptions={{ headerShown: false, sceneStyle: { backgroundColor: 'transparent' }, tabBarStyle: { backgroundColor: C.bg, borderTopColor: C.line }, tabBarActiveTintColor: C.primary, tabBarInactiveTintColor: C.muted }}>
       {user?.role === 'teacher' ? (
         <Tab.Screen name="Студенты" component={TeacherScreen} options={{ tabBarIcon: ic('people') }} />
       ) : (

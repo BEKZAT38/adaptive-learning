@@ -19,17 +19,17 @@ export default function AuthScreen() {
     <SafeAreaView style={ui.screen}>
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1, justifyContent: 'center', padding: 24 }}>
         <View style={{ alignItems: 'center', marginBottom: 24 }}>
-          <View style={{ width: 80, height: 80, borderRadius: 24, backgroundColor: C.primary, alignItems: 'center', justifyContent: 'center' }}><I n="school" s={44} c="#fff" /></View>
+          <View style={{ width: 80, height: 80, borderRadius: 24, backgroundColor: C.primary, alignItems: 'center', justifyContent: 'center' }}><I n="school" s={44} c={C.bg} /></View>
           <Text style={[ui.h1, { marginTop: 12 }]}>Adaptive Learning</Text>
           <Text style={ui.muted}>Обучение, которое подстраивается под вас</Text>
         </View>
-        {reg && <TextInput style={ui.input} placeholder="Имя и фамилия" value={name} onChangeText={setName} />}
-        <TextInput style={ui.input} placeholder="Логин" autoCapitalize="none" value={login} onChangeText={setLogin} />
-        <TextInput style={ui.input} placeholder="Пароль" secureTextEntry value={pw} onChangeText={setPw} />
+        {reg && <TextInput placeholderTextColor="#8FB9A3" style={ui.input} placeholder="Имя и фамилия" value={name} onChangeText={setName} />}
+        <TextInput placeholderTextColor="#8FB9A3" style={ui.input} placeholder="Логин" autoCapitalize="none" value={login} onChangeText={setLogin} />
+        <TextInput placeholderTextColor="#8FB9A3" style={ui.input} placeholder="Пароль" secureTextEntry value={pw} onChangeText={setPw} />
         {reg && (
           <View style={{ flexDirection: 'row', gap: 10, marginTop: 10 }}>
             {(['student', 'teacher'] as Role[]).map((r) => (
-              <Pressable key={r} onPress={() => setRole(r)} style={{ flex: 1, padding: 12, borderRadius: 14, alignItems: 'center', borderWidth: 1.5, borderColor: role === r ? C.primary : C.line, backgroundColor: role === r ? C.soft : '#fff' }}>
+              <Pressable key={r} onPress={() => setRole(r)} style={{ flex: 1, padding: 12, borderRadius: 14, alignItems: 'center', borderWidth: 1.5, borderColor: role === r ? C.primary : C.line, backgroundColor: role === r ? C.soft : C.card }}>
                 <Text style={{ fontWeight: '700', color: role === r ? C.primary : C.muted }}>{r === 'student' ? 'Студент' : 'Преподаватель'}</Text>
               </Pressable>
             ))}

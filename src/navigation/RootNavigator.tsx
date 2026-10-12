@@ -1,5 +1,6 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { DarkTheme, NavigationContainer } from '@react-navigation/native';
+import { C } from '../styles/theme';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RootStackParams } from '../types';
 import { useApp } from '../store/AppContext';
@@ -9,14 +10,15 @@ import ResultScreen from '../screens/ResultScreen';
 import StudentScreen from '../screens/StudentScreen';
 import MainTabs from './MainTabs';
 
+const theme = { ...DarkTheme, colors: { ...DarkTheme.colors, background: 'transparent', card: C.bg, text: C.text, border: C.line, primary: C.primary } };
 const Stack = createNativeStackNavigator<RootStackParams>();
 
 export default function RootNavigator() {
   const { user, ready } = useApp();
   if (!ready) return null;
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <NavigationContainer theme={theme}>
+      <Stack.Navigator screenOptions={{ headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}>
         {!user ? (
           <Stack.Screen name="Auth" component={AuthScreen} />
         ) : (

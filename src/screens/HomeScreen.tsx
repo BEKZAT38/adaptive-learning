@@ -23,7 +23,7 @@ export default function HomeScreen({ navigation }: TabScreenProps<'Главна�
           <Avatar name={user!.name} />
           <View><Text style={ui.h1}>Привет, {user!.name.split(' ')[0]}!</Text><Text style={ui.muted}>Сегодня отличный день для практики</Text></View>
         </View>
-        <View style={[ui.card, { backgroundColor: C.primary }]}>
+        <View style={[ui.card, { backgroundColor: '#15803D' }]}>
           <Text style={{ color: '#DCFCE7' }}>Мой прогресс</Text>
           <Text style={{ color: '#fff', fontSize: 40, fontWeight: '800' }}>{st.overall}%</Text>
           <Bar value={st.overall / 100} color="#fff" track="#ffffff55" />
