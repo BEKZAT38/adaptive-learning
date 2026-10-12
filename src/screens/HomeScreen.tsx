@@ -1,4 +1,5 @@
 import React from 'react';
+import { TabScreenProps } from '../types';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useApp } from '../store/AppContext';
@@ -8,7 +9,7 @@ import { ACH, stats } from '../logic/stats';
 import { Avatar, Bar, Badge, Btn, IconBox } from '../components/ui';
 import { C, ui } from '../styles/theme';
 
-export default function HomeScreen({ navigation }: any) {
+export default function HomeScreen({ navigation }: TabScreenProps<'Главная'>) {
   const { user, progress, sessions, active } = useApp();
   const st = stats(progress, sessions);
   const p = progress[active];

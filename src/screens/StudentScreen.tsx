@@ -3,9 +3,9 @@ import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParams } from '../types';
-import { DEMO_STUDENTS, SUBJECTS } from '../data/subjects';
+import { SUBJECTS } from '../data/subjects';
+import { DEMO_STUDENTS, avgAcc } from '../data/students';
 import { levelName, pct } from '../logic/adaptive';
-import { avgAcc } from './TeacherScreen';
 import { Avatar, Bar, I } from '../components/ui';
 import { C, ui } from '../styles/theme';
 

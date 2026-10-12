@@ -4,12 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useApp } from '../store/AppContext';
 import { subjectOf } from '../data/subjects';
 import { stats } from '../logic/stats';
-import { Bar, I, IconBox } from '../components/ui';
+import { Bar, IconBox, StatTile as Tile } from '../components/ui';
 import { C, ui } from '../styles/theme';
 
-const Tile = ({ icon, v, l }: { icon: string; v: string; l: string }) => (
-  <View style={[ui.card, { width: '31%', alignItems: 'center', padding: 12 }]}><I n={icon} /><Text style={[ui.h2, { marginTop: 4 }]}>{v}</Text><Text style={{ fontSize: 11, color: C.muted }}>{l}</Text></View>
-);
 export default function ProgressScreen() {
   const { progress, sessions } = useApp();
   const st = stats(progress, sessions);

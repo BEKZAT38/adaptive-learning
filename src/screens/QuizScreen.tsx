@@ -1,11 +1,14 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { QUESTIONS } from '../data/questions';
 import { emptyProgress, pickNext, updateAbility } from '../logic/adaptive';
 import { useApp } from '../store/AppContext';
-import { Bar, Btn, I } from '../components/ui';
+import { Bar, Btn } from '../components/ui';
+import { QuestionCard } from '../components/QuestionCard';
+import { AnswerOptions } from '../components/AnswerOptions';
+import { FeedbackCard } from '../components/FeedbackCard';
 import { C, ui } from '../styles/theme';
 import { Q, RootStackParams, Session, SubjectProgress } from '../types';
 
@@ -61,8 +64,7 @@ export default function QuizScreen({ route, navigation }: Props) {
     t0.current = Date.now();
   };
 
-  const isInput = !!q.accept;
-  const right = isInput ? q.accept![0] : q.options[q.answer];
+  const accept = q.accept;
   return (
     <SafeAreaView style={ui.screen} edges={['bottom']}>
       <ScrollView contentContainerStyle={ui.pad} keyboardShouldPersistTaps="handled">
@@ -71,39 +73,18 @@ export default function QuizScreen({ route, navigation }: Props) {
           <Text style={ui.muted}>Сложность: {'●'.repeat(q.level)}{'○'.repeat(3 - q.level)}</Text>
         </View>
         <Bar value={n / total} />
-        <View style={ui.card}>
-          <Text style={[ui.muted, { marginBottom: 6 }]}>{q.topic}</Text>
-          <Text style={[ui.h2, { fontSize: 20 }]}>{q.text}</Text>
-        </View>
-        {isInput ? (
+        <QuestionCard topic={q.topic} text={q.text} />
+        {accept ? (
           <>
             <TextInput style={[ui.input, { fontFamily: 'monospace' }]} placeholder="Ваш ответ" autoCapitalize="none" autoCorrect={false} editable={!res} value={text} onChangeText={setText} />
-            {!res && <Btn icon="checkmark" title="Проверить" disabled={!text.trim()} onPress={() => submit(q.accept!.some((a) => norm(a) === norm(text)), -1)} />}
+            {!res && <Btn icon="checkmark" title="Проверить" disabled={!text.trim()} onPress={() => submit(accept.some((a) => norm(a) === norm(text)), -1)} />}
           </>
         ) : (
-          q.options.map((o, i) => {
-            const color = !res ? C.line : i === q.answer ? C.ok : i === res.sel ? C.bad : C.line;
-            return (
-              <Pressable key={i} onPress={() => submit(i === q.answer, i)} style={[ui.card, { marginTop: 10, borderWidth: 2, borderColor: color }]}>
-                <Text style={{ fontSize: 16, color: C.text }}>{o}</Text>
-              </Pressable>
-            );
-          })
+          <AnswerOptions options={q.options} answer={q.answer} selected={res ? res.sel : null} onSelect={(i) => submit(i === q.answer, i)} />
         )}
         {!res && !hint && <Btn ghost icon="bulb" title="Подсказка" onPress={() => setHint(true)} />}
         {hint && !res && <Text style={{ marginTop: 12, color: C.muted }}>Подсказка: {q.hint}</Text>}
-        {res && (
-          <View style={[ui.card, { borderLeftWidth: 5, borderLeftColor: res.good ? C.ok : C.bad }]}>
-            <View style={[ui.row, { justifyContent: 'flex-start', gap: 8 }]}>
-              <I n={res.good ? 'checkmark-circle' : 'close-circle'} c={res.good ? C.ok : C.bad} />
-              <Text style={ui.h2}>{res.good ? 'Верно!' : 'Неверно'}</Text>
-            </View>
-            {!res.good && <Text style={{ marginTop: 6, color: C.text }}>Правильный ответ: {right}</Text>}
-            <Text style={[ui.muted, { marginTop: 6 }]}>Разбор: {q.hint}</Text>
-            <Text style={[ui.muted, { marginTop: 4 }]}>Время: {res.sec} с{!res.good ? ' • тема попадёт в повторение' : ''}</Text>
-            <Btn title={n >= total ? 'Завершить' : 'Далее'} onPress={next} />
-          </View>
-        )}
+        {res && <FeedbackCard good={res.good} right={accept ? accept[0] : q.options[q.answer]} hint={q.hint} sec={res.sec} last={n >= total} onNext={next} />}
       </ScrollView>
     </SafeAreaView>
   );

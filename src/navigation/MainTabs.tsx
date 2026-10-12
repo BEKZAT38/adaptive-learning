@@ -9,8 +9,9 @@ import ProgressScreen from '../screens/ProgressScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import TeacherScreen from '../screens/TeacherScreen';
 import { C } from '../styles/theme';
+import { TabParams } from '../types';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<TabParams>();
 const ic = (n: any) => ({ color, size }: { color: string; size: number }) => <Ionicons name={n} size={size} color={color} />;
 
 export default function MainTabs() {
