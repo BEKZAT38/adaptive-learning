@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "bekzat-app",
-    "slug": "bekzat-app",
+    "name": "Adaptive Learning",
+    "slug": "adaptive-learning",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
