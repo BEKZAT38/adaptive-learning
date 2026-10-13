@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { C } from '../styles/theme';
+import { View } from 'react-native';
+import { useSettings } from '../context/SettingsContext';
 
 type Props = { value: number; color?: string; track?: string };
-export const Bar = ({ value, color = C.primary, track = C.line }: Props) => (
-  <View style={[s.track, { backgroundColor: track }]}><View style={[s.fill, { width: `${Math.round(Math.max(0, Math.min(1, value)) * 100)}%`, backgroundColor: color }]} /></View>
-);
-const s = StyleSheet.create({
-  track: { height: 8, borderRadius: 4, overflow: 'hidden', marginTop: 8 },
-  fill: { height: 8, borderRadius: 4 },
-});
+export function Bar({ value, color, track }: Props) {
+  const { colors: C } = useSettings();
+  return (
+    <View style={{ height: 8, borderRadius: 4, overflow: 'hidden', marginTop: 8, backgroundColor: track ?? C.line }}>
+      <View style={{ height: 8, borderRadius: 4, width: `${Math.round(Math.max(0, Math.min(1, value)) * 100)}%`, backgroundColor: color ?? C.primary }} />
+    </View>
+  );
+}

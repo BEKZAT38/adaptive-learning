@@ -5,3 +5,5 @@ export * from './ProgressBar';
 export * from './Badge';
 export * from './Avatar';
 export * from './StatTile';
+export * from './OptionChips';
+export * from './LangPicker';

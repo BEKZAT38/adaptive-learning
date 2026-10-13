@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
+import { useSettings } from '../context/SettingsContext';
 import { FlatList, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DEMO_STUDENTS, avgAcc } from '../data/students';
 import { Bar } from '../components/ProgressBar';
 import { StudentRow } from '../components/StudentRow';
-import { C, ui } from '../styles/theme';
 import { TabScreenProps } from '../types';
 
 export default function TeacherScreen({ navigation }: TabScreenProps<'Студенты'>) {
+  const { colors: C, ui, t, fs, lvl } = useSettings();
   const [q, setQ] = useState('');
   const list = DEMO_STUDENTS.map((s, i) => ({ s, i })).filter(({ s }) => s.name.toLowerCase().includes(q.toLowerCase()));
   const group = Math.round(DEMO_STUDENTS.reduce((a, s) => a + avgAcc(s.acc), 0) / DEMO_STUDENTS.length);
@@ -20,17 +21,17 @@ export default function TeacherScreen({ navigation }: TabScreenProps<'Студе
         keyboardShouldPersistTaps="handled"
         ListHeaderComponent={
           <View>
-            <Text style={ui.h1}>Панель преподавателя</Text>
-            <Text style={ui.muted}>Демонстрационные данные группы</Text>
+            <Text style={ui.h1}>{t('Панель преподавателя')}</Text>
+            <Text style={ui.muted}>{t('Демонстрационные данные группы')}</Text>
             <View style={[ui.card, { backgroundColor: '#15803D' }]}>
-              <Text style={{ color: '#DCFCE7' }}>Общая успеваемость</Text>
+              <Text style={{ color: '#DCFCE7' }}>{t('Общая успеваемость')}</Text>
               <Text style={{ color: '#fff', fontSize: 38, fontWeight: '800' }}>{group}%</Text>
               <Bar value={group / 100} color="#fff" track="#ffffff55" />
             </View>
-            <TextInput placeholderTextColor="#8FB9A3" style={ui.input} placeholder="Поиск студента" value={q} onChangeText={setQ} />
+            <TextInput placeholderTextColor={C.muted} style={ui.input} placeholder={t('Поиск студента')} value={q} onChangeText={setQ} />
           </View>
         }
-        ListEmptyComponent={<Text style={[ui.muted, { marginTop: 12 }]}>Никого не найдено</Text>}
+        ListEmptyComponent={<Text style={[ui.muted, { marginTop: 12 }]}>{t('Никого не найдено')}</Text>}
         renderItem={({ item: { s, i } }) => (
           <StudentRow name={s.name} group={s.group} err={s.err} sec={s.sec} acc={avgAcc(s.acc)} onPress={() => navigation.navigate('Student', { index: i })} />
         )}

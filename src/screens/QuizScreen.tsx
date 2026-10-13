@@ -1,4 +1,5 @@
 import React, { useMemo, useRef, useState } from 'react';
+import { useSettings } from '../context/SettingsContext';
 import { ScrollView, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -9,13 +10,13 @@ import { Bar, Btn } from '../components/ui';
 import { QuestionCard } from '../components/QuestionCard';
 import { AnswerOptions } from '../components/AnswerOptions';
 import { FeedbackCard } from '../components/FeedbackCard';
-import { C, ui } from '../styles/theme';
 import { Q, RootStackParams, Session, SubjectProgress } from '../types';
 
 type Props = NativeStackScreenProps<RootStackParams, 'Quiz'>;
 const norm = (s: string) => s.toLowerCase().replace(/;/g, '').replace(/\s+/g, ' ').trim();
 
 export default function QuizScreen({ route, navigation }: Props) {
+  const { colors: C, ui, t, fs, lvl } = useSettings();
   const { subject, mode, topic } = route.params;
   const { progress, finish } = useApp();
   const base = progress[subject] ?? emptyProgress();
@@ -69,21 +70,21 @@ export default function QuizScreen({ route, navigation }: Props) {
     <SafeAreaView style={ui.screen} edges={['bottom']}>
       <ScrollView contentContainerStyle={ui.pad} keyboardShouldPersistTaps="handled">
         <View style={ui.row}>
-          <Text style={ui.muted}>{topic ? topic : mode === 'diagnostic' ? 'Диагностика' : 'Практика'} • {Math.min(n + (res ? 0 : 1), total)}/{total}</Text>
-          <Text style={ui.muted}>Сложность: {'●'.repeat(q.level)}{'○'.repeat(3 - q.level)}</Text>
+          <Text style={ui.muted}>{topic ? t(topic) : mode === 'diagnostic' ? t('Диагностика') : t('Практика')} • {Math.min(n + (res ? 0 : 1), total)}/{total}</Text>
+          <Text style={ui.muted}>{t('Сложность')}: {'●'.repeat(q.level)}{'○'.repeat(3 - q.level)}</Text>
         </View>
         <Bar value={n / total} />
         <QuestionCard topic={q.topic} text={q.text} />
         {accept ? (
           <>
-            <TextInput placeholderTextColor="#8FB9A3" style={[ui.input, { fontFamily: 'monospace' }]} placeholder="Ваш ответ" autoCapitalize="none" autoCorrect={false} editable={!res} value={text} onChangeText={setText} />
-            {!res && <Btn icon="checkmark" title="Проверить" disabled={!text.trim()} onPress={() => submit(accept.some((a) => norm(a) === norm(text)), -1)} />}
+            <TextInput placeholderTextColor={C.muted} style={[ui.input, { fontFamily: 'monospace' }]} placeholder={t('Ваш ответ')} autoCapitalize="none" autoCorrect={false} editable={!res} value={text} onChangeText={setText} />
+            {!res && <Btn icon="checkmark" title={t('Проверить')} disabled={!text.trim()} onPress={() => submit(accept.some((a) => norm(a) === norm(text)), -1)} />}
           </>
         ) : (
           <AnswerOptions options={q.options} answer={q.answer} selected={res ? res.sel : null} onSelect={(i) => submit(i === q.answer, i)} />
         )}
-        {!res && !hint && <Btn ghost icon="bulb" title="Подсказка" onPress={() => setHint(true)} />}
-        {hint && !res && <Text style={{ marginTop: 12, color: C.muted }}>Подсказка: {q.hint}</Text>}
+        {!res && !hint && <Btn ghost icon="bulb" title={t('Подсказка')} onPress={() => setHint(true)} />}
+        {hint && !res && <Text style={{ marginTop: 12, color: C.muted }}>{t('Подсказка')}: {q.hint}</Text>}
         {res && <FeedbackCard good={res.good} right={accept ? accept[0] : q.options[q.answer]} hint={q.hint} sec={res.sec} last={n >= total} onNext={next} />}
       </ScrollView>
     </SafeAreaView>
